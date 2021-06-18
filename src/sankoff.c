@@ -238,7 +238,7 @@ static void sankoff_sample(struct phy *phy, int r, double *g, double *h,
 #define NS(i,j) nodestate[(i)+(j)*nnode]
 
     for (k = 0; k < nsample; ++k)
-        NS(u, k) = sankoff_choose(r, nnode, L, f, only_mpr) + 1;
+        NS(u, k) = sankoff_choose(r, nnode, L, f+u, only_mpr) + 1;
 
     cursor = phy_cursor_prepare(phy, phy_root(phy), ALL_NODES, PREORDER);
     phy_cursor_step(cursor);
