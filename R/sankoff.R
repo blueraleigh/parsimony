@@ -4,25 +4,27 @@
     if (missing(levs)) {
         if (is.factor(data)) {
             r = nlevels(data)
-            g = matrix(0, n, r)
+            g = matrix(Inf, n, r)
             data = match(data, levels(data))
-            g[(seq_along(n)-1L) + (data-1L)*n] = 1
+            idx = (seq_along(n)-1L) + (data-1L)*n
+            g[idx+1] = 0
         } else {
             stopifnot(is.integer(data))
             stopifnot(all(data > 0L))
             stopifnot(all(tabulate(data, max(data)) > 0L))
             r = length(unique(data))
-            g = matrix(0, n, r)
-            g[(seq_along(n)-1L) + (data-1L)*n] = 1
+            g = matrix(Inf, n, r)
+            idx = (seq_along(n)-1L) + (data-1L)*n
+            g[idx+1] = 0
         }
     } else {
         r = length(levs)
-        g = matrix(0, n, r)
+        g = matrix(Inf, n, r)
         f = match(data, levs)
         missing = is.na(f)
 
         idx = (seq_along(n)[!missing]-1) + (f[!missing]-1L)*n
-        g[idx] = 1
+        g[idx+1] = 0
 
         has_missing = any(missing)
         if (has_missing) {
@@ -34,7 +36,7 @@
                 p = match(ambig[[ as.character(data[i]) ]], levs)
                 if (anyNA(p))
                     stop("invalid ambiguous character state encoding")
-                g[i, p] = 1
+                g[i, p] = 0
             }
         }
     }
@@ -44,7 +46,7 @@
 
 
 # Perform a maximum parsimony reconstruction of ancestral
-# states given an r-state character using Fitch's algorithm
+# states given an r-state character using Sankoff's algorithm
 mpr.sankoff = function(phy, data, cost, levels, ambig) {
     stopifnot(is.tree(phy))
     stopifnot(!is.null(names(data)))
