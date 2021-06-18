@@ -50,7 +50,10 @@ static void sankoff_downpass(struct phy *phy, int r, double *g, double *h,
             v = phy_node_index(desc);
             G(u, j) = H(v, j);
             for (desc = phy_node_next(desc); desc; desc = phy_node_next(desc))
+            {
+                v = phy_node_index(desc);
                 G(u, j) += H(v, j);
+            }
         }
 
         for (i = 0; i < r; ++i)
@@ -87,7 +90,7 @@ static void sankoff_uppass(struct phy *phy, int r, double *g, double *h,
     for (j = 0; j < r; ++j)
         F(parent, j) = G(parent, j);
 
-    phy_cursor_prepare(phy, phy_root(phy), ALL_NODES, PREORDER);
+    cursor = phy_cursor_prepare(phy, phy_root(phy), ALL_NODES, PREORDER);
     phy_cursor_step(cursor);
     while ((node = phy_cursor_step(cursor)) != 0)
     {

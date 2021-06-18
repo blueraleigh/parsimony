@@ -6,7 +6,7 @@
             r = nlevels(data)
             g = matrix(Inf, n, r)
             data = match(data, levels(data))
-            idx = (seq_along(n)-1L) + (data-1L)*n
+            idx = (seq_len(n)-1L) + (data-1L)*n
             g[idx+1] = 0
         } else {
             stopifnot(is.integer(data))
@@ -14,7 +14,7 @@
             stopifnot(all(tabulate(data, max(data)) > 0L))
             r = length(unique(data))
             g = matrix(Inf, n, r)
-            idx = (seq_along(n)-1L) + (data-1L)*n
+            idx = (seq_len(n)-1L) + (data-1L)*n
             g[idx+1] = 0
         }
     } else {
@@ -23,7 +23,7 @@
         f = match(data, levs)
         missing = is.na(f)
 
-        idx = (seq_along(n)[!missing]-1) + (f[!missing]-1L)*n
+        idx = (seq_len(n)[!missing]-1) + (f[!missing]-1L)*n
         g[idx+1] = 0
 
         has_missing = any(missing)
@@ -54,7 +54,7 @@ mpr.sankoff = function(phy, data, cost, levels, ambig) {
     data = data[tiplabels(phy)]
     g = .sankoff.data(data, levels, ambig)
     r = ncol(g)
-    g = rbind(g, matrix(0, Ntip(phy)-Nnode(phy), r))
+    g = rbind(g, matrix(0, Nnode(phy)-Ntip(phy), r))
     h = matrix(0, Nnode(phy), r)
     f = matrix(0, Nnode(phy), r)
 
