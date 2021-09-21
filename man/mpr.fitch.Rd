@@ -20,7 +20,7 @@ The names of the list correspond to ambiguous character states. The values
 for each list item refer to states in \code{levels}. Thus, if one of the
 names in \code{ambig} appears in \code{data}, that data entry is assumed to
 potentially map to any of the states in \code{levels} that appear in the
-corresponding \code{ambig} entry.}
+corresponding \code{ambig} entry. Optional.}
 }
 \value{
 A list with five components:
